@@ -1,0 +1,109 @@
+<div class="content-wrapper">
+  <section class="content-header">
+    <h1>Stock<small>Lists</small></h1>
+    <ol class="breadcrumb">
+      <li>
+        <a href="">
+          <i class="fa fa-dashboard"></i> Home</a>
+      </li>
+      <li>
+        <a href="">Stock</a>
+      </li>
+    </ol>
+  </section>
+
+  <!-- Main content -->
+  <section *ngIf="products != null" class="content">
+    <div class="row">
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="info-box">
+          <span class="info-box-icon">
+            <img src="assets/images/ic_product.png" class="logo">
+          </span>
+          <div class="info-box-content">
+            <p class="p_custom">Products</p>
+            <h2>{{ products.result.length }}</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="info-box">
+          <span class="info-box-icon">
+            <img src="assets/images/ic_new.png" class="logo">
+          </span>
+          <div class="info-box-content">
+            <p class="p_custom">Defect</p>
+            <h2>0</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 col-sm-6 col-xs-12">
+        <div class="info-box">
+          <span class="info-box-icon">
+            <img src="assets/images/ic_out_of_stock.png" class="logo">
+          </span>
+          <div class="info-box-content">
+            <p class="p_custom">SoldOut</p>
+            <h2>{{count.result}}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="box-body">
+        <div class="row" style="margin-bottom: 40px;">
+          <div class="col-xs-6">
+
+            <input (keyup)="seachTextChanged.next($event.target.value)" type="search" class="form-control input-lg" placeholder="Enter search keyword"
+              style="border-radius:10px;">
+          </div>
+          <div class="col-xs-6 text-right">
+            <a routerLink="/stock/create" style="float:right; margin:0; width: 100px;"
+              class="btn btn-success btn-lg">เพิ่ม</a>
+          </div>
+        </div>
+
+        <table class="table table-bordered table-striped table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>NAME</th>
+              <th>PRICE</th>
+              <th>STOCK</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let item of products.result">
+              <!-- <tbody *ngIf="(mProductArray | async) != null">
+                <tr *ngFor="let item of (mProductArray | async)?.slice().reverse()">  -->
+              <td>{{ item.productId }}</td>
+              <td>
+                <div *ngIf="item.image === '';then no_image else image">here is ignored</div>
+                <span>
+                  <ng-template #image>
+                    <img src="{{baseAPIURL}}/images/{{item.image}}" class=product_image>
+                  </ng-template>
+                  <ng-template #no_image>
+                    <img src="assets/images/no_photo.jpg" class=product_image>
+                  </ng-template>
+                </span>
+                <strong class="product_name">{{ item.name }}</strong>
+              </td>
+              <td>฿{{ item.price | number: '1.2-2' }}</td>
+              <td>{{ item.stock | number }} PCS.</td>
+              <td>
+                <img (click)="editProduct(item.productId)" src="assets/images/ic_edit.png" class="edit_product">
+                <img (click)="deleteProduct(item.productId)" src="assets/images/ic_delete.png" class="delete_product">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
